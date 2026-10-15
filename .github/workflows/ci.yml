@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  workflow_dispatch:
+
+jobs:
+  build-test-train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Download dataset
+        run: python scripts/download_data.py
+
+      - name: Unit tests
+        run: pytest -v --junitxml=pytest-report.xml
+
+      - name: Train models (tracked with MLflow)
+        run: python -m src.train
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: pytest-report.xml
+
+      - name: Upload model, metrics and MLflow runs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: training-outputs
+          path: |
+            models/model.joblib
+            artifacts/metrics.json
+            mlruns/
+          if-no-files-found: warn
+
+  docker:
+    needs: build-test-train
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t heart-disease-api:ci .
+
+      - name: Smoke-test container
+        run: |
+          docker run -d --name api -p 8000:8000 heart-disease-api:ci
+          for i in $(seq 1 20); do
+            curl -sf localhost:8000/health && break || sleep 2
+          done
+          curl -sf -X POST localhost:8000/predict -H 'Content-Type: application/json' \
+            -d '{"age":63,"sex":1,"cp":1,"trestbps":145,"chol":233,"fbs":1,"restecg":2,"thalach":150,"exang":0,"oldpeak":2.3,"slope":3,"ca":0,"thal":6}'
+
+      - name: Container logs
+        if: always()
+        run: docker logs api
