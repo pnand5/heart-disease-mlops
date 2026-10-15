@@ -1,0 +1,11 @@
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+extend-exclude = ["notebooks", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]

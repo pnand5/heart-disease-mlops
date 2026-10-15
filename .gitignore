@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+mlruns/
+mlartifacts/
+artifacts/
+*.egg-info/
+.DS_Store
+mlflow.db
