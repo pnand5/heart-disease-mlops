@@ -1,0 +1,44 @@
+{
+  "uid": "heart-api",
+  "title": "Heart Disease API",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "time": { "from": "now-15m", "to": "now" },
+  "panels": [
+    {
+      "id": 1, "type": "timeseries", "title": "Request rate by path / status (req/s)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        { "refId": "A", "expr": "sum by (path, status) (rate(api_requests_total[1m]))", "legendFormat": "{{path}} {{status}}" }
+      ]
+    },
+    {
+      "id": 2, "type": "timeseries", "title": "Latency p50 / p95 (s)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        { "refId": "A", "expr": "histogram_quantile(0.5, sum by (le) (rate(api_request_latency_seconds_bucket{path=\"/predict\"}[1m])))", "legendFormat": "p50 /predict" },
+        { "refId": "B", "expr": "histogram_quantile(0.95, sum by (le) (rate(api_request_latency_seconds_bucket{path=\"/predict\"}[1m])))", "legendFormat": "p95 /predict" }
+      ]
+    },
+    {
+      "id": 3, "type": "stat", "title": "Total predictions by outcome",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        { "refId": "A", "expr": "sum by (diagnosis) (model_predictions_total)", "legendFormat": "{{diagnosis}}" }
+      ]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Client errors (4xx) and server errors (5xx)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        { "refId": "A", "expr": "sum(api_requests_total{status=~\"4..\"}) or vector(0)", "legendFormat": "4xx" },
+        { "refId": "B", "expr": "sum(api_requests_total{status=~\"5..\"}) or vector(0)", "legendFormat": "5xx" }
+      ]
+    }
+  ]
+}
