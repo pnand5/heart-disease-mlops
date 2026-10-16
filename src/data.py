@@ -31,7 +31,7 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     `thal`) are categorical, so they are filled with the column mode.
     """
     df = df.copy()
-    df[TARGET] = (df["num"] > 0).astype(int)
+    df[TARGET] = (df["num"] > 1).astype(int)
     df = df.drop(columns="num")
     for col in df.columns.drop(TARGET):
         if df[col].isna().any():
