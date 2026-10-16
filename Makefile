@@ -33,4 +33,4 @@ monitoring-down:
 	docker compose down
 
 mlflow-ui:
-	.venv/bin/mlflow ui --backend-store-uri sqlite:///mlflow.db
+	.venv/bin/mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5001
