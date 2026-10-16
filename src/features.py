@@ -1,3 +1,4 @@
+import os  # unused import: ruff F401 should fail the lint step
 """Preprocessing transformers shared by training and inference."""
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
