@@ -1,15 +1,15 @@
-# captured 2026-10-16 12:43:13 IST
-# $ kubectl --context docker-desktop -n heart-disease get deploy,pods,svc -o wide
+# captured 2026-10-16 12:54:52 IST
+# $ kubectl --context docker-desktop -n heart-disease get deploy,pods,svc
 
-NAME                                READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                     SELECTOR
-deployment.apps/heart-disease-api   2/2     2            2           43h   api          heart-disease-api:latest   app=heart-disease-api
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/heart-disease-api   2/2     2            2           43h
 
-NAME                                     READY   STATUS    RESTARTS   AGE   IP           NODE             NOMINATED NODE   READINESS GATES
-pod/heart-disease-api-696dc4b5db-5gkxf   1/1     Running   0          43h   10.1.0.189   docker-desktop   <none>           <none>
-pod/heart-disease-api-696dc4b5db-ptbcx   1/1     Running   0          43h   10.1.0.190   docker-desktop   <none>           <none>
+NAME                                     READY   STATUS    RESTARTS   AGE
+pod/heart-disease-api-696dc4b5db-5gkxf   1/1     Running   0          43h
+pod/heart-disease-api-696dc4b5db-ptbcx   1/1     Running   0          43h
 
-NAME                        TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE   SELECTOR
-service/heart-disease-api   LoadBalancer   10.101.240.117   localhost     8080:30731/TCP   43h   app=heart-disease-api
+NAME                        TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/heart-disease-api   LoadBalancer   10.101.240.117   localhost     8080:30731/TCP   43h
 
 $ kubectl --context docker-desktop -n heart-disease describe deployment heart-disease-api | head -40
 Name:                   heart-disease-api
@@ -61,9 +61,9 @@ $ curl -X POST localhost:8080/predict -H 'Content-Type: application/json' -d '{"
 
 $ kubectl --context docker-desktop -n heart-disease logs deploy/heart-disease-api --tail=6
 Found 2 pods, using pod/heart-disease-api-696dc4b5db-5gkxf
-INFO:     10.1.0.1:58486 - "GET /health HTTP/1.1" 200 OK
-INFO:     192.168.65.3:64350 - "GET /health HTTP/1.1" 200 OK
-2026-10-16 07:13:13,961 INFO heart-api GET /health -> 200 in 0.3 ms
-2026-10-16 07:13:13,983 INFO heart-api input={'age': 67.0, 'sex': 1, 'cp': 4, 'trestbps': 160.0, 'chol': 286.0, 'fbs': 0, 'restecg': 2, 'thalach': 108.0, 'exang': 1, 'oldpeak': 1.5, 'slope': 2, 'ca': 3, 'thal': 3} result={'prediction': 1, 'diagnosis': 'heart disease', 'confidence': 0.9856, 'probability_disease': 0.9856}
-2026-10-16 07:13:13,983 INFO heart-api POST /predict -> 200 in 4.2 ms
-INFO:     192.168.65.3:64364 - "POST /predict HTTP/1.1" 200 OK
+2026-10-16 07:24:47,521 INFO heart-api GET /health -> 200 in 1.7 ms
+INFO:     10.1.0.1:56044 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.1.0.1:58792 - "GET /health HTTP/1.1" 200 OK
+2026-10-16 07:24:52,517 INFO heart-api GET /health -> 200 in 0.4 ms
+2026-10-16 07:24:53,485 INFO heart-api GET /health -> 200 in 0.4 ms
+INFO:     192.168.65.3:62078 - "GET /health HTTP/1.1" 200 OK

@@ -1,4 +1,4 @@
-# captured 2026-10-16 12:43:08 IST
+# captured 2026-10-16 12:54:48 IST
 # $ docker build -t heart-disease-api:latest .
 
 #6 CACHED
@@ -23,16 +23,16 @@
 
 #13 exporting to image
 #13 exporting layers 0.0s done
-#13 writing image sha256:e2b851fbd7d3eb7a77b2548b6c6310b0558a812a2f3ad220592e8398e49ee4e3 done
+#13 writing image sha256:c764d7d15df86d2044e5f0d4c4be87f42a493ea8e82f34e93616188cb05018ca done
 #13 naming to docker.io/library/heart-disease-api:latest done
 #13 DONE 0.0s
 
 $ docker images heart-disease-api
-REPOSITORY          TAG       IMAGE ID       CREATED        SIZE
-heart-disease-api   latest    e2b851fbd7d3   1 second ago   473MB
+REPOSITORY          TAG       IMAGE ID       CREATED                  SIZE
+heart-disease-api   latest    c764d7d15df8   Less than a second ago   473MB
 
 $ docker run -d --name heart-proof -p 8001:8000 heart-disease-api:latest
-8979c93d46b0425810dc24ecc658d2e8d611b9aecdf547d6630a237173d8543b
+5f3f20867ac4e6e4d92bb701632af60b7f4f13b65b593e5d4ec8c6278f9e59e2
 
 $ docker ps --filter name=heart-proof
 NAMES         IMAGE                      STATUS                           PORTS
@@ -52,9 +52,9 @@ $ curl -X POST localhost:8001/predict -d {"age":-5}   # invalid input
 HTTP 422
 
 $ docker logs heart-proof | tail -6
-INFO:     192.168.65.1:54490 - "POST /predict HTTP/1.1" 200 OK
-2026-10-16 07:13:13,416 INFO heart-api input={'age': 67.0, 'sex': 1, 'cp': 4, 'trestbps': 160.0, 'chol': 286.0, 'fbs': 0, 'restecg': 2, 'thalach': 108.0, 'exang': 1, 'oldpeak': 1.5, 'slope': 2, 'ca': 3, 'thal': 3} result={'prediction': 1, 'diagnosis': 'heart disease', 'confidence': 0.9856, 'probability_disease': 0.9856}
-2026-10-16 07:13:13,416 INFO heart-api POST /predict -> 200 in 3.9 ms
-INFO:     192.168.65.1:64590 - "POST /predict HTTP/1.1" 200 OK
-2026-10-16 07:13:13,443 INFO heart-api POST /predict -> 422 in 0.6 ms
-INFO:     192.168.65.1:20076 - "POST /predict HTTP/1.1" 422 Unprocessable Entity
+INFO:     192.168.65.1:32395 - "POST /predict HTTP/1.1" 200 OK
+2026-10-16 07:24:52,562 INFO heart-api input={'age': 67.0, 'sex': 1, 'cp': 4, 'trestbps': 160.0, 'chol': 286.0, 'fbs': 0, 'restecg': 2, 'thalach': 108.0, 'exang': 1, 'oldpeak': 1.5, 'slope': 2, 'ca': 3, 'thal': 3} result={'prediction': 1, 'diagnosis': 'heart disease', 'confidence': 0.9856, 'probability_disease': 0.9856}
+2026-10-16 07:24:52,562 INFO heart-api POST /predict -> 200 in 4.1 ms
+INFO:     192.168.65.1:53119 - "POST /predict HTTP/1.1" 200 OK
+2026-10-16 07:24:52,588 INFO heart-api POST /predict -> 422 in 0.5 ms
+INFO:     192.168.65.1:20156 - "POST /predict HTTP/1.1" 422 Unprocessable Entity

@@ -1,4 +1,4 @@
-# captured 2026-10-16 12:43:06 IST
+# captured 2026-10-16 12:54:46 IST
 # $ .venv/bin/pytest -v
 
 ============================= test session starts ==============================
@@ -37,4 +37,4 @@ tests/test_model.py::test_saved_model_loads_and_predicts PASSED          [100%]
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 20 passed, 1 warning in 0.39s =========================
+======================== 20 passed, 1 warning in 0.40s =========================

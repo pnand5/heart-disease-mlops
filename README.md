@@ -103,6 +103,15 @@ Open <http://localhost:3000/d/heart-api/heart-disease-api> (anonymous viewing is
 is a local-only default). The API logs every request and prediction to stdout and exposes request counts,
 latency histograms and prediction counts at `/metrics`.
 
+## Report
+
+`report/build_report.py` regenerates `report/Heart_Disease_MLOps_Report.pdf` (Chrome headless) and the editable `.docx`
+from one content definition, embedding every image in `screenshots/` and `report/figures/`:
+
+```bash
+.venv/bin/python report/build_report.py     # missing screenshots become marked placeholders
+```
+
 ## CI/CD
 
 `.github/workflows/ci.yml` runs on every push (and manually):
