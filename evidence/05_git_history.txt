@@ -1,0 +1,8 @@
+# captured 2026-10-16 12:43:14 IST
+# $ git log --format='%h %an <%ae> %s'
+
+971f436 pnand5 <prasanna.nandalal490@gmail.com> Add Kubernetes manifests and Prometheus/Grafana monitoring
+cd8b69b pnand5 <prasanna.nandalal490@gmail.com> Add FastAPI service, tests, Docker image and CI workflow
+926e457 pnand5 <prasanna.nandalal490@gmail.com> Add feature pipeline and MLflow-tracked model training
+55ef6be pnand5 <prasanna.nandalal490@gmail.com> Add project scaffold, data pipeline and EDA notebook
+0637798 pnand5 <prasanna.nandalal490@gmail.com> Initial commit

@@ -1,0 +1,60 @@
+# captured 2026-10-16 12:43:08 IST
+# $ docker build -t heart-disease-api:latest .
+
+#6 CACHED
+
+#7 [3/8] COPY requirements-serve.txt .
+#7 CACHED
+
+#8 [4/8] RUN pip install --no-cache-dir -r requirements-serve.txt
+#8 CACHED
+
+#9 [5/8] COPY src/ src/
+#9 DONE 0.0s
+
+#10 [6/8] COPY api/ api/
+#10 DONE 0.0s
+
+#11 [7/8] COPY models/model.joblib models/model.joblib
+#11 DONE 0.0s
+
+#12 [8/8] RUN useradd --create-home appuser
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers 0.0s done
+#13 writing image sha256:e2b851fbd7d3eb7a77b2548b6c6310b0558a812a2f3ad220592e8398e49ee4e3 done
+#13 naming to docker.io/library/heart-disease-api:latest done
+#13 DONE 0.0s
+
+$ docker images heart-disease-api
+REPOSITORY          TAG       IMAGE ID       CREATED        SIZE
+heart-disease-api   latest    e2b851fbd7d3   1 second ago   473MB
+
+$ docker run -d --name heart-proof -p 8001:8000 heart-disease-api:latest
+8979c93d46b0425810dc24ecc658d2e8d611b9aecdf547d6630a237173d8543b
+
+$ docker ps --filter name=heart-proof
+NAMES         IMAGE                      STATUS                           PORTS
+heart-proof   heart-disease-api:latest   Up 1 second (health: starting)   0.0.0.0:8001->8000/tcp, [::]:8001->8000/tcp
+
+$ curl localhost:8001/health
+{"status":"ok"}
+
+$ curl -X POST localhost:8001/predict -H 'Content-Type: application/json' -d '{"age":63,"sex":1,"cp":1,"trestbps":145,"chol":233,"fbs":1,"restecg":2,"thalach":150,"exang":0,"oldpeak":2.3,"slope":3,"ca":0,"thal":6}'
+{"prediction":0,"diagnosis":"no heart disease","confidence":0.8345,"probability_disease":0.1655}
+
+$ curl -X POST localhost:8001/predict ... (high-risk patient)
+{"prediction":1,"diagnosis":"heart disease","confidence":0.9856,"probability_disease":0.9856}
+
+$ curl -X POST localhost:8001/predict -d {"age":-5}   # invalid input
+{"detail":[{"type":"greater_than_equal","loc":["body","age"],"msg":"Input should be greater than or equal to 1","input":-5,"ctx":{"ge":1.0}},{"type":"missing","loc":["body","sex"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","cp"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","trestbps"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","chol"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","fbs"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","restecg"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","thalach"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","exang"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","oldpeak"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","slope"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","ca"],"msg":"Field required","input":{"age":-5}},{"type":"missing","loc":["body","thal"],"msg":"Field required","input":{"age":-5}}]}
+HTTP 422
+
+$ docker logs heart-proof | tail -6
+INFO:     192.168.65.1:54490 - "POST /predict HTTP/1.1" 200 OK
+2026-10-16 07:13:13,416 INFO heart-api input={'age': 67.0, 'sex': 1, 'cp': 4, 'trestbps': 160.0, 'chol': 286.0, 'fbs': 0, 'restecg': 2, 'thalach': 108.0, 'exang': 1, 'oldpeak': 1.5, 'slope': 2, 'ca': 3, 'thal': 3} result={'prediction': 1, 'diagnosis': 'heart disease', 'confidence': 0.9856, 'probability_disease': 0.9856}
+2026-10-16 07:13:13,416 INFO heart-api POST /predict -> 200 in 3.9 ms
+INFO:     192.168.65.1:64590 - "POST /predict HTTP/1.1" 200 OK
+2026-10-16 07:13:13,443 INFO heart-api POST /predict -> 422 in 0.6 ms
+INFO:     192.168.65.1:20076 - "POST /predict HTTP/1.1" 422 Unprocessable Entity
