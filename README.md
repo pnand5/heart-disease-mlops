@@ -36,8 +36,7 @@ with repeated 5x5 CV, plus the decision threshold and probability calibration. F
 
 ```
 data/raw, data/processed   downloaded UCI file and the cleaned CSV
-scripts/                   download_data.py, generate_traffic.py, demo_*.sh, sample_patient.json,
-                           refresh_submission.sh
+scripts/                   download_data.py, generate_traffic.py, sample_patient.json
 src/                       data.py (cleaning), features.py (preprocessing), train.py, predict.py,
                            experiments.py (feature-selection / threshold / calibration study)
 notebooks/                 01_eda, 02_training, 03_inference, 04_feature_and_threshold_experiments
@@ -49,7 +48,7 @@ monitoring/                Prometheus config and provisioned Grafana dashboard
 .github/workflows/ci.yml   lint -> test -> train -> docker build + smoke test
 Dockerfile, docker-compose.yml, Makefile, requirements*.txt
 models/model.joblib        final pipeline (preprocessing + classifier)
-report/, screenshots/      report (PDF, DOCX and its builder script) and screenshots
+report/, screenshots/      final report (PDF and DOCX) with its figures, and screenshots
 ```
 
 ## Quick start (clean machine)
@@ -118,15 +117,6 @@ python scripts/generate_traffic.py --seconds 120    # mixed valid/invalid reques
 Open <http://localhost:3000/d/heart-api/heart-disease-api> (anonymous viewing is enabled; admin login `admin`/`admin`
 is a local-only default). The API logs every request and prediction to stdout and exposes request counts,
 latency histograms and prediction counts at `/metrics`.
-
-## Report
-
-`report/build_report.py` regenerates `report/Heart_Disease_MLOps_Report.pdf` (Chrome headless) and the editable `.docx`
-from one content definition, embedding every image in `screenshots/` and `report/figures/`:
-
-```bash
-.venv/bin/python report/build_report.py     # missing screenshots become marked placeholders
-```
 
 ## CI/CD
 
