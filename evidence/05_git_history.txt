@@ -1,0 +1,11 @@
+# captured 2026-10-16 12:54:53 IST
+# $ git log --format='%h %an <%ae> %s'
+
+6bd7a67 pnand5 <prasanna.nandalal490@gmail.com> Write README, fix Grafana units/colours, add traffic generator
+b79b92d pnand5 <prasanna.nandalal490@gmail.com> Add architecture diagram, MLflow/Grafana/Prometheus/Swagger screenshots and command evidence
+740b172 pnand5 <prasanna.nandalal490@gmail.com> Add training and inference notebooks with executed outputs
+971f436 pnand5 <prasanna.nandalal490@gmail.com> Add Kubernetes manifests and Prometheus/Grafana monitoring
+cd8b69b pnand5 <prasanna.nandalal490@gmail.com> Add FastAPI service, tests, Docker image and CI workflow
+926e457 pnand5 <prasanna.nandalal490@gmail.com> Add feature pipeline and MLflow-tracked model training
+55ef6be pnand5 <prasanna.nandalal490@gmail.com> Add project scaffold, data pipeline and EDA notebook
+0637798 pnand5 <prasanna.nandalal490@gmail.com> Initial commit
